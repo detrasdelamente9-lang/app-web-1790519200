@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoCalc Pro - Calculadora de Criptomonedas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #39ff14;
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121f;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg-dark);
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.05) 0%, transparent 50%);
+        }
+        .cyber-grid {
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .neon-text { text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan); }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink));
+            z-index: -1;
+            border-radius: 10px;
+            opacity: 0.3;
+        }
+        input, select {
+            background: #1a1a2e;
+            border: 1px solid #333;
+            color: var(--neon-cyan);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Orbitron', monospace;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+        label { display: block; color: #888; font-size: 0.85rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn {
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 12px 24px;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+            width: 100%;
+            font-size: 0.9rem;
+        }
+        .btn:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+        .ad-banner {
+            background: #1a1a2e;
+            border: 1px dashed var(--neon-pink);
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-family: monospace;
+            margin: 20px 0;
+        }
+        .amazon-link {
+            color: var(--neon-green);
+            text-decoration: none;
+            border-bottom: 1px solid var(--neon-green);
+        }
+        .amazon-link:hover { text-shadow: 0 0 10px var(--neon-green); }
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.5; }
+        }
+        .flicker { animation: flicker 0.5s infinite; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        @media (max-width: 600px) {
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="cyber-grid">
+    <header style="text-align:center; padding:40px 20px; border-bottom: 2px solid var(--neon-cyan);">
+        <h1 class="neon-text" style="font-family:'Orbitron'; font-size:2.5rem; letter-spacing:3px;">CRYPTOCALC PRO</h1>
+        <p style="color:var(--neon-pink); font-family:'Orbitron'; letter-spacing:2px;">CALCULADORA DE CRIPTOMONEDAS E INVERSIONES</p>
+    </header>
+
+    <!-- Banner AdSense Top -->
+    <div style="max-width:728px; margin:20px auto;">
+        <div class="ad-banner">
+            <div data-ad-client="ca-pub-0000000000000000" data-ad-slot="0000000000" style="width:728px;height:90px;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-family:monospace;">
+                ADVERTISEMENT - pub-0000000000000000
+            </div>
+        </div>
+    </div>
+
+    <main style="max-width:1200px; margin:0 auto; padding:20px;">
+        <div class="grid-2">
+            <!-- Calculadora Conversion -->
+            <div class="card">
+                <h2 style="color:var(--neon-cyan); font-family:'Orbitron'; margin-bottom:20px; border-bottom:1px solid #333; padding-bottom:10px;">CONVERSION CRYPTO</h2>
+                <div>
+                    <label>Cantidad</label>
+                    <input type="number" id="conv-cantidad" value="1" step="any">
+                </div>
+                <div>
+                    <label>Desde</label>
+                    <select id="conv-desde">
+                        <option>BTC</option><option>ETH</option><option>USDT</option><option>SOL</option><option>BNB</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Hacia</label>
+                    <select id="conv-hacia">
+                        <option>USD</option><option>EUR</option><option>BTC</option><option>ETH</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="calcularConversion()">CONVERTIR</button>
+                <div id="resultado-conversion" style="margin-top:20px; font-family:'Orbitron'; font-size:1.2rem; color:var(--neon-green); min-height:30px;"></div>
+            </div>
+
+            <!-- Calculadora ROI -->
+            <div class="card">
+                <h2 style="color:var(--neon-cyan); font-family:'Orbitron'; margin-bottom:20px; border-bottom:1px solid #333; padding-bottom:10px;">CALCULADORA ROI</h2>
+                <div>
+                    <label>Inversion Inicial ($)</label>
+                    <input type="number" id="roi-inversion" value="1000" step="any">
+                </div>
+                <div>
+                    <label>Precio Entrada ($)</label>
+                    <input type="number" id="roi-entrada" value="50000" step="any">
+                </div>
+                <div>
+                    <label>Precio Actual ($)</label>
+                    <input type="number" id="roi-actual" value="60000" step="any">
+                </div>
+                <button class="btn" onclick="calcularROI()">CALCULAR</button>
+                <div id="resultado-roi" style="margin-top:20px; font-family:'Orbitron'; font-size:1rem; color:var(--neon-pink); min-height:60px;"></div>
+            </div>
+        </div>
+
+        <!-- Banner Amazon -->
+        <div style="max-width:728px; margin:40px auto; text-align:center;">
+            <div class="ad-banner">
+                <p style="color:var(--neon-green); font-family:'Orbitron'; margin-bottom:10px;">【 RECOMENDACIONES 】</p>
+                <a href="https://www.amazon.es/dp/EJEMPLO/ref=as_li_ss_tl?ie=UTF8&camp=0000&creative=9325&linkCode=as2&tag=tupagina-21" class="amazon-link" target="_blank">
+                    📚 Curso Completo de Blockchain y Criptomonedas (Amazon)
+                </a>
+                <br><br>
+                <a href="https://www.amazon.es/dp/EJEMPLO2/ref=as_li_ss_tl?ie=UTF8&camp=0000&creative=9325&linkCode=as2&tag=tupagina-21" class="amazon-link" target="_blank">
+                    💻 Ledger Nano S Plus - Wallet Hardware Crypto
+                </a>
+                <p style="font-size:0.8rem; color:#555; margin-top:10px;">Amazon Associates Program - tag: tupagina-21</p>
+            </div>
+        </div>
+
+        <!-- Calculadora Ganancia/Pérdida -->
+        <div class="card" style="max-width:800px; margin:0 auto 40px;">
+            <h2 style="color:var(--neon-cyan); font-family:'Orbitron'; margin-bottom:20px; border-bottom:1px solid #333; padding-bottom:10px;">GANANCIA / PERDIDA REAL</h2>
+            <div class="grid-2" style="gap:15px;">
+                <div>
+                    <label>Cantidad Adquirida</label>
+                    <input type="number" id="gp-cantidad" value="0.5" step="any">
+                </div>
+                <div>
+                    <label>Precio Compra ($)</label>
+                    <input type="number" id="gp-compra" value="40000" step="any">
+                </div>
+                <div>
+                    <label>Precio Venta ($)</label>
+                    <input type="number" id="gp-venta" value="45000" step="any">
+                </div>
+                <div>
+                    <label>Comision (%)</label>
+                    <input type="number" id="gp-comision" value="0.5" step="any">
+                </div>
+            </div>
+            <button class="btn" style="margin-top:20px;" onclick="calcularGanancia()">CALCULAR GANANCIA</button>
+            <div id="resultado-gp" style="margin-top:20px; font-family:'Orbitron'; font-size:1.1rem; min-height:40px;"></div>
+        </div>
+
+        <!-- Banner AdSense Bottom -->
+        <div style="max-width:728px; margin:20px auto;">
+            <div class="ad-banner">
+                <div data-ad-client="ca-pub-0000000000000000" data-ad-slot="0000000001" style="width:728px;height:90px;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-family:monospace;">
+                    ADVERTISEMENT - pub-0000000000000000
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="text-align:center; padding:30px; border-top:1px solid #333; color:#555; font-size:0.9rem;">
+        <p>CryptoCalc Pro &copy; 2024 | Herramienta de calculo educativo</p>
+        <p style="margin-top:5px; font-size:0.8rem;">Amazon Associate: tupagina-21</p>
+    </footer>
+
+    <script>
+        const rates = {
+            'BTC': { USD: 67000, EUR: 62000, BTC: 1, ETH: 16.5, USDT: 67000 },
+            'ETH': { USD: 4000, EUR: 3700, BTC: 0.06, ETH: 1, USDT: 4000, SOL: 18 },
+            'SOL': { USD: 220, EUR: 200, BTC: 0.0033, ETH: 0.055, USDT: 220 },
+            'BNB': { USD: 600, EUR: 550, BTC: 0.009, ETH: 0.15, USDT: 600 },
+            'USDT': { USD: 1, EUR: 0.92, BTC: 0.000015, ETH: 0.00025 }
+        };
+
+        function calcularConversion() {
+            const cantidad = parseFloat(document.getElementById('conv-cantidad').value) || 0;
+            const desde = document.getElementById('conv-desde').value;
+            const hacia = document.getElementById('conv-hacia').value;
+            
+            if (!rates[desde] || !rates[desde][hacia]) {
+                document.getElementById('resultado-conversion').innerHTML = '<span style="color:#ff4444;">PAR NO DISPONIBLE</span>';
+                return;
+            }
+            
+            const resultado = cantidad * rates[desde][hacia];
+            const simbolo = hacia === 'USD' ? '$' : hacia === 'EUR' ? '€' : hacia;
+            document.getElementById('resultado-conversion').innerHTML = 
+                `<span style="color:var(--neon-cyan);">${cantidad} ${desde}</span> = <span style="color:var(--neon-green); font-size:1.4rem;">${resultado.toFixed(8)} ${simbolo}</span>`;
+            
+            const el = document.getElementById('resultado-conversion');
+            el.classList.add('flicker');
+            setTimeout(() => el.classList.remove('flicker'), 500);
+        }
+
+        function calcularROI() {
+            const inversion = parseFloat(document.getElementById('roi-inversion').value) || 0;
+            const entrada = parseFloat(document.getElementById('roi-entrada').value) || 1;
+            const actual = parseFloat(document.getElementById('roi-actual').value) || 1;
+            
+            const cantidad = inversion / entrada;
+            const valorActual = cantidad * actual;
+            const ganancia = valorActual - inversion;
+            const porcentaje = ((actual - entrada) / entrada) * 100;
+            
+            const color = ganancia >= 0 ? 'var(--neon-green)' : '#ff4444';
+            const signo = ganancia >= 0 ? '+' : '';
+            
+            document.getElementById('resultado-roi').innerHTML = `
+                <div>Cantidad: ${cantidad.toFixed(8)} unidades</div>
+                <div>Valor Actual: $${valorActual.toFixed(2)}</div>
+                <div style="color:${color}; font-size:1.3rem;">${signo}$${ganancia.toFixed(2)} (${signo}${porcentaje.toFixed(2)}%)</div>
+            `;
+        }
+
+        function calcularGanancia() {
+            const cantidad = parseFloat(document.getElementById('gp-cantidad').value) || 0;
+            const compra = parseFloat(document.getElementById('gp-compra').value) || 0;
+            const venta = parseFloat(document.getElementById('gp-venta').value) || 0;
+            const comision = (parseFloat(document.getElementById('gp-comision').value) || 0) / 100;
+            
+            const costeTotal = cantidad * compra * (1 + comision);
+            const ventaTotal = cantidad * venta * (1 - comision);
+            const beneficio = ventaTotal - costeTotal;
+            const porcentaje = ((venta - compra) / compra) * 100;
+            
+            const color = beneficio >= 0 ? 'var(--neon-green)' : '#ff4444';
+            const signo = beneficio >= 0 ? '+' : '';
+            
+            document.getElementById('resultado-gp').innerHTML = `
+                <div style="font-size:0.9rem; opacity:0.8;">Coste Total: $${costeTotal.toFixed(2)} | Venta: $${ventaTotal.toFixed(2)}</div>
+                <div style="color:${color}; font-size:1.4rem; margin-top:5px;">${signo}$${beneficio.toFixed(2)} (${signo}${porcentaje.toFixed(2)}%)</div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            ['conv-cantidad', 'conv-desde', 'conv-hacia'].forEach(id => {
+                document.getElementById(id).addEventListener('change', calcularConversion);
+                document.getElementById(id).addEventListener('input', calcularConversion);
+            });
+            calcularConversion();
+        });
+    </script>
+</body>
+</html>
